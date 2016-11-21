@@ -1,5 +1,7 @@
 package impl.model;
 
-public class MessageCrypteImpl {
+import contract.model.MessageCrypte;
+
+public class MessageCrypteImpl implements MessageCrypte{
 
 }

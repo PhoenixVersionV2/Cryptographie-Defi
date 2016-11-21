@@ -1,5 +1,7 @@
 package impl.model;
 
-public class MessageClairImpl {
+import contract.model.MessageClair;
+
+public class MessageClairImpl implements MessageClair{
 
 }

@@ -1,5 +1,7 @@
 package impl.model;
 
-public class CleImpl {
+import contract.model.Cle;
+
+public class CleImpl implements Cle{
 
 }

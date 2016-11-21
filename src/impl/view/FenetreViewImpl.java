@@ -1,5 +1,11 @@
 package impl.view;
 
-public class FenetreViewImpl {
+import contract.view.FenetreView;
 
+public class FenetreViewImpl implements FenetreView{
+	
+	public FenetreViewImpl(){
+		
+	}
+	
 }
