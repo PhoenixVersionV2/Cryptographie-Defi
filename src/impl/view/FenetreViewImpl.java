@@ -17,6 +17,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import contract.view.FenetreView;
 import impl.model.MessageClairImpl;
+import impl.model.MessageCrypteImpl;
 
 public class FenetreViewImpl implements FenetreView{
 	
@@ -90,6 +91,16 @@ public class FenetreViewImpl implements FenetreView{
         	}
         });
 	
+		//Création de l'evenement pour le bouton de decryptage
+				boutonDecrypter.addMouseListener(new MouseAdapter(){
+		            @Override
+		            public void mousePressed(MouseEvent e){
+		        			
+		            	EventBoutonDecrypter();
+		            	
+		        	}
+		});
+		
 		//La fenêtre devient visible
 		fenetre.setVisible(true);
 		
@@ -147,6 +158,12 @@ public class FenetreViewImpl implements FenetreView{
 	
 	public void EventBoutonCrypter() {
 		MessageClairImpl messageClair = new MessageClairImpl(fichier);
+	}
+
+
+	@Override
+	public void EventBoutonDecrypter() {
+		MessageCrypteImpl messageCrypte = new MessageCrypteImpl(fichier);	
 	}
 	
 }
