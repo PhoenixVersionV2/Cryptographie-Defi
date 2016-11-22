@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import contract.view.FenetreView;
+import impl.model.MessageClairImpl;
 
 public class FenetreViewImpl implements FenetreView{
 	
@@ -80,14 +81,22 @@ public class FenetreViewImpl implements FenetreView{
         });
 		
 		//Création de l'evenement pour le bouton de cryptage
-		
+		boutonCrypter.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mousePressed(MouseEvent e){
+        			
+            	EventBoutonCrypter();
+            	
+        	}
+        });
+	
 		//La fenêtre devient visible
 		fenetre.setVisible(true);
 		
 	}
 
+	
 	//Evénement du bouton parcourir
-	@Override
 	public void EventBoutonParcourir(JLabel labelNomFichier) {
 		
 		//Creation de la boite de dialogue pour recuperer le fichier
@@ -133,6 +142,11 @@ public class FenetreViewImpl implements FenetreView{
 			}
 			
 		}
+	}
+
+	
+	public void EventBoutonCrypter() {
+		MessageClairImpl messageClair = new MessageClairImpl(fichier);
 	}
 	
 }
