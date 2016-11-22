@@ -10,12 +10,13 @@ import contract.model.MessageClair;
 
 public class MessageClairImpl implements MessageClair{
 
-	private ArrayList<Byte> messageBinaire= new ArrayList<Byte>();
+	private ArrayList<Byte> messageClaireBinaire= new ArrayList<Byte>();
 	
 	public MessageClairImpl(File file){
 		ConversionBinaireMessage(file);
 	}
 
+	
 	public void ConversionBinaireMessage(File fichier) {
 		// On instancie nos objets :
         // fis va lire le fichier
@@ -43,7 +44,7 @@ public class MessageClairImpl implements MessageClair{
         try {
 			while ((n = fis.read(buf)) >= 0) {
 			   for (int bit=0; bit<buf.length-1;bit++) {
-			      messageBinaire.add(buf[bit]);
+			      messageClaireBinaire.add(buf[bit]);
 			   }
 			   
 			   //Nous réinitialisons le buffer à vide
