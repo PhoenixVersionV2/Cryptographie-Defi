@@ -11,6 +11,7 @@ import contract.model.MessageClair;
 public class MessageClairImpl implements MessageClair{
 
 	private ArrayList<Byte> messageClaireBinaire= new ArrayList<Byte>();
+	private ArrayList<Byte> cle;
 	
 	public MessageClairImpl(File file){
 		ConversionBinaireMessage(file);
@@ -59,5 +60,10 @@ public class MessageClairImpl implements MessageClair{
 		}
         
         System.out.println("Copie terminée !");
+	}
+	
+	
+	public void creationMasque(){
+		
 	}
 }

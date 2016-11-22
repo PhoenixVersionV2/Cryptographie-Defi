@@ -1,5 +1,9 @@
 package contract.model;
 
-public interface Cle {
+import java.io.File;
 
+public interface Cle {
+	
+	public void ConversionBinaireCle(File fichier);
+	
 }
