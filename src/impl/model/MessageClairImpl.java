@@ -62,8 +62,4 @@ public class MessageClairImpl implements MessageClair{
         System.out.println("Copie terminée !");
 	}
 	
-	
-	public void creationMasque(){
-		
-	}
 }
