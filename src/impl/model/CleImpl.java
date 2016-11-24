@@ -19,7 +19,7 @@ public class CleImpl implements Cle{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//creationMasque();
+		creationMasque();
 	}
 	
 	
@@ -134,7 +134,13 @@ public class CleImpl implements Cle{
 	@Override
 	public void creationMasque() {
 		ArrayList<Integer> tableauInitial = new ArrayList<Integer>();
-		
+		for(int i=0;i<cleBinaire.size();i++){
+			if((i%2)==0){
+				tableauInitial.add(0);
+			}else{
+				tableauInitial.add(1);
+			}
+		}
 	}
 
 }
