@@ -10,7 +10,7 @@ import contract.model.MessageCrypte;
 
 public class MessageCrypteImpl implements MessageCrypte{
 	
-	private ArrayList<Byte> messageCrypteBinaire= new ArrayList<Byte>();
+	private ArrayList<Integer> messageCrypteBinaire= new ArrayList<Integer>();
 	
 	public MessageCrypteImpl(File file){
 		ConversionBinaireMessage(file);
@@ -41,10 +41,11 @@ public class MessageCrypteImpl implements MessageCrypte{
         // Lorsque la lecture du fichier est terminée l'affectation n'est
         // plus possible !
         // On sort donc de la boucle
+        StringBuilder binary = new StringBuilder();
         try {
 			while ((n = fis.read(buf)) >= 0) {
 			   for (int bit=0; bit<buf.length-1;bit++) {
-			      messageCrypteBinaire.add(buf[bit]);
+			      binary.append(buf[bit]);
 			   }
 			   
 			   //Nous réinitialisons le buffer à vide
@@ -53,12 +54,16 @@ public class MessageCrypteImpl implements MessageCrypte{
 			   buf = new byte[8];
 
 			}
+			
+			for(int i=0; i<binary.length();i++){
+	        	messageCrypteBinaire.add(Integer.parseInt(binary.charAt(i)+""));
+	        }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
-        System.out.println("Copie terminée !");
+        System.out.println("Copie message crypté terminée !");
 	}
 
 }

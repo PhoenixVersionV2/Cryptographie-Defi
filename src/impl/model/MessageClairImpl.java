@@ -10,8 +10,8 @@ import contract.model.MessageClair;
 
 public class MessageClairImpl implements MessageClair{
 
-	private ArrayList<Byte> messageClaireBinaire= new ArrayList<Byte>();
-	private ArrayList<Byte> cle;
+	private ArrayList<Integer> messageClaireBinaire= new ArrayList<Integer>();
+	private ArrayList<Integer> cle;
 	
 	public MessageClairImpl(File file){
 		ConversionBinaireMessage(file);
@@ -42,10 +42,11 @@ public class MessageClairImpl implements MessageClair{
         // Lorsque la lecture du fichier est terminée l'affectation n'est
         // plus possible !
         // On sort donc de la boucle
+        StringBuilder binary = new StringBuilder();
         try {
 			while ((n = fis.read(buf)) >= 0) {
 			   for (int bit=0; bit<buf.length-1;bit++) {
-			      messageClaireBinaire.add(buf[bit]);
+				   binary.append(buf[bit]);
 			   }
 			   
 			   //Nous réinitialisons le buffer à vide
@@ -54,12 +55,16 @@ public class MessageClairImpl implements MessageClair{
 			   buf = new byte[8];
 
 			}
+			
+			for(int i=0; i<binary.length();i++){
+	        	messageClaireBinaire.add(Integer.parseInt(binary.charAt(i)+""));
+	        }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
-        System.out.println("Copie terminée !");
+        System.out.println("Copie message clair terminée !");
 	}
 	
 }

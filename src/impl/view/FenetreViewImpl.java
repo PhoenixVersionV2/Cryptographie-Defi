@@ -1,14 +1,11 @@
 package impl.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -211,6 +208,7 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 		if(cle1!=null&&message!=null){
 			CleImpl premiereCle=new CleImpl(cle1);
 			MessageClairImpl messageClair = new MessageClairImpl(message);
+			CleImpl secondeCle=new CleImpl(cle1.getParentFile().getPath());
 		}else{
 			JOptionPane.showMessageDialog(null, "Il nous manque un fichier afin de mener à bien le cryptage du fichier.", "Erreur Fichier", JOptionPane.INFORMATION_MESSAGE);
 		}

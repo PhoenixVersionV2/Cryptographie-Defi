@@ -3,6 +3,7 @@ package impl.model;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -11,14 +12,21 @@ import contract.model.Cle;
 public class CleImpl implements Cle{
 	private ArrayList<Integer> cleBinaire = new ArrayList<Integer>();
 	
-	public CleImpl(){
-		genererCle(256);
+	public CleImpl(String zoneEnregistrement){
+		try {
+			genererCle(256, zoneEnregistrement);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//creationMasque();
-	};
+	}
+	
 	
 	public CleImpl(File fichier){
 		ConversionFichierEnBinaire(fichier);
 	}
+	
 	
 	public void ConversionFichierEnBinaire(File fichier){
 		// On instancie nos objets :
@@ -80,23 +88,23 @@ public class CleImpl implements Cle{
         for(int i=0; i<binary.length();i++){
         	cleBinaire.add(Integer.parseInt(binary.charAt(i)+""));
         }
-        System.out.println("Copie terminée !");
-	}
-
-	@Override
-	public void creationMasque() {
-		// TODO Auto-generated method stub
+        System.out.println("Copie clé terminée !");
 	}
 	
-	public void genererCle(int length){
+	
+	public void genererCle(int length, String zoneEnregistrement) throws IOException{
 			int nombreCaractere=length/8;
 		    String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; // On peut supprimer les lettres dont on ne veut pas
 		    String pass = "";
+		    FileOutputStream fos = new FileOutputStream(new File(zoneEnregistrement+"/Cle2.txt"));
 		    for(int x=0;x<nombreCaractere;x++)
 		    {
 		       int caractere = (int)Math.floor(Math.random() * 62); // Si on supprime des lettres on diminue ce nombre
 		       pass += chars.charAt(caractere);
+		       fos.write(chars.charAt(caractere));
+		       
 		    }
+		    fos.close();
 		    
 		    //pass correspond à la clé en String. On la transforme ensuite en un tableau de bytes.
 		    byte[] bytes = pass.getBytes();
@@ -121,4 +129,12 @@ public class CleImpl implements Cle{
 		        }
 			     System.out.println("clé 2 créée");
 	}
+	
+
+	@Override
+	public void creationMasque() {
+		ArrayList<Integer> tableauInitial = new ArrayList<Integer>();
+		
+	}
+
 }
