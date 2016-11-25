@@ -6,8 +6,7 @@ import java.io.IOException;
 
 public interface Cle {
 	
-	public void ConversionFichierEnBinaire(File fichier);
+	public void ConversionCleEnBinaire(String cle);
 	public void creationMasque();
-	public void genererCle(int length, String zoneEnregistrement) throws IOException;
 	
 }

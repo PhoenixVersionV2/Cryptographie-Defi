@@ -6,6 +6,11 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -14,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import contract.view.FenetreView;
@@ -23,10 +29,11 @@ import impl.model.MessageCrypteImpl;
 
 public class FenetreViewImpl implements FenetreView, ActionListener{
 	
-	private File fichier, message, cle1, cle2;
+	private File fichier, message;
+	private JTextField textFieldIV=new JTextField();
+	private JTextField textFieldCle1=new JTextField();
+	private JTextField textFieldCle2=new JTextField();
 	private JLabel labelNomFichier = new JLabel("Aucun fichier sélectionné ...");
-	private JLabel labelNomCle1 = new JLabel("Clé n°1 non sélectionnée ...");
-	private JLabel labelNomCle2 = new JLabel("Clé n°2 non sélectionnée ...");
 	
 	
 	public FenetreViewImpl(){
@@ -41,7 +48,7 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fenetre.setResizable(false);
 		fenetre.setLayout(new BorderLayout());
-		fenetre.setSize(new Dimension(600,250));
+		fenetre.setSize(new Dimension(600,300));
 		fenetre.setLocationRelativeTo(null);
 		
 		//Creation du panel nord
@@ -50,7 +57,7 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 				
 		//Creation du panel centre
 		JPanel panelCentre=new JPanel();
-		panelCentre.setLayout(new GridLayout(3,1));
+		panelCentre.setLayout(new GridLayout(4,1));
 		fenetre.add(panelCentre, BorderLayout.CENTER);
 						
 		//Creation du panel sud
@@ -70,6 +77,10 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 		JPanel panelCle1=new JPanel();
 		panelCentre.add(panelCle1);
 
+		//Création du panel pour obtenir le vecteur d'initialisation
+		JPanel panelIV=new JPanel();
+		panelCentre.add(panelIV);
+
 		//Création du panel pour obtenir la clé 2
 		JPanel panelCle2=new JPanel();
 		panelCentre.add(panelCle2);
@@ -81,19 +92,30 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 		JButton boutonParcourirFichier=new JButton("Parcourir");
 		panelFichier.add(boutonParcourirFichier);
 		
-		//Ajout du label qui contiendra le nom de la clé 1 selectionne
+		//Ajout du label qui de la clé 1
+
+		JLabel labelNomCle1 = new JLabel("Clé n°1 :");
 		panelCle1.add(labelNomCle1);
 		
-		//Creation du bouton parcourir pour la clé 1
-		JButton boutonParcourirCle1=new JButton("Parcourir");
-		panelCle1.add(boutonParcourirCle1);
+		//Creation du JTextField pour la clé 1
+		textFieldCle1.setPreferredSize(new Dimension(385,30));
+		panelCle1.add(textFieldCle1);
 		
-		//Ajout du label qui contiendra le nom de la clé 2 selectionne
+		//Ajout du label pour le vecteur d'initialisation
+		JLabel labelIV = new JLabel("Vecteur d'Initialisation :");
+		panelIV.add(labelIV);
+		
+		//Creation du JTextField pour le vecteur d'initialisation
+		textFieldIV.setPreferredSize(new Dimension(300,30));
+		panelIV.add(textFieldIV);
+		
+		//Ajout du label pour la clé 2
+		JLabel labelNomCle2 = new JLabel("Clé n°2 :");
 		panelCle2.add(labelNomCle2);
 		
-		//Creation du bouton parcourir pour la clé 2
-		JButton boutonParcourirCle2=new JButton("Parcourir");
-		panelCle2.add(boutonParcourirCle2);
+		//Creation du  JTextField pour la clé 2
+		textFieldCle2.setPreferredSize(new Dimension(385,30));
+		panelCle2.add(textFieldCle2);
 		
 		//Creation du bouton pour crypter le fichier 
 		JButton boutonCrypter=new JButton("Lancer le chiffrement du message");
@@ -107,13 +129,12 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 		boutonParcourirFichier.setActionCommand("parcourirFichier");
 		boutonParcourirFichier.addActionListener(this);
 		
-		//Creation de l'evenement pour le bouton parcourir de la clé 1
-		boutonParcourirCle1.setActionCommand("parcourirCle1");
-		boutonParcourirCle1.addActionListener(this);
-		
-		//Creation de l'evenement pour le bouton parcourir de la clé 2
-		boutonParcourirCle2.setActionCommand("parcourirCle2");
-		boutonParcourirCle2.addActionListener(this);
+		//Creation de l'evenement pour le IV
+		textFieldIV.addKeyListener(new KeyAdapter() {
+		        public void keyTyped(KeyEvent e) {
+		        	EventJTextFieldIV(e);
+		        }
+		});
 		
 		//Création de l'evenement pour le bouton de cryptage
 		boutonCrypter.setActionCommand("boutonCrypter");
@@ -132,11 +153,7 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getActionCommand()=="parcourirFichier"){
-			EventBoutonParcourir("message");
-		}else if(arg0.getActionCommand()=="parcourirCle1"){
-			EventBoutonParcourir("cle1");
-		}else if(arg0.getActionCommand()=="parcourirCle2"){
-			EventBoutonParcourir("cle2");
+			EventBoutonParcourir();
 		}else if(arg0.getActionCommand()=="boutonCrypter"){
 			EventBoutonCrypter();
 		}else if(arg0.getActionCommand()=="boutonDecrypter"){
@@ -145,7 +162,7 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 	}
 	
 	//Evénement des boutons parcourir
-	public void EventBoutonParcourir(String nomFichier) {
+	public void EventBoutonParcourir() {
 		
 		//Creation de la boite de dialogue pour recuperer le fichier
 		JFileChooser dialogue = new JFileChooser(".");
@@ -185,45 +202,59 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 			
 			//Si le fichier est bien un fichier texte alors on affiche qu'un fichier a bien ete selectionne. 
 			if(continuer == true){
-				if(nomFichier=="message"){
 					labelNomFichier.setText("Fichier sélectionné : "+fichier.getPath());
 					labelNomFichier.repaint();
 					message=fichier;
-				}else if(nomFichier=="cle1"){
-					labelNomCle1.setText("Clé 1 sélectionnée : "+fichier.getPath());
-					labelNomCle1.repaint();
-					cle1=fichier;
-				}else if(nomFichier=="cle2"){
-					labelNomCle2.setText("Clé 2 sélectionnée : "+fichier.getPath());
-					labelNomCle2.repaint();
-					cle2=fichier;
-				}
 			}
 			
 		}
 	}
 
+	public void EventJTextFieldIV(KeyEvent e){
+		String keyCode=e.getKeyChar()+"";
+		String texte=textFieldIV.getText();
+		if((keyCode.equals("1")||keyCode.equals("0"))&&texte.length()<4){
+		}else{
+			e.consume();
+		}
+	}
 	
 	public void EventBoutonCrypter() {
-		if(cle1!=null&&message!=null){
-			CleImpl premiereCle=new CleImpl(cle1);
-			MessageClairImpl messageClair = new MessageClairImpl(message);
-			CleImpl secondeCle=new CleImpl(cle1.getParentFile().getPath());
+		if(!textFieldCle1.getText().equals("")&&!textFieldCle2.getText().equals("")&&!textFieldCle1.getText().equals(textFieldCle2.getText())){
+			if(!textFieldIV.getText().equals("")){
+				if(message!=null){
+					CleImpl premiereCle=new CleImpl(textFieldCle1.getText());
+					CleImpl secondeCle= new CleImpl(textFieldCle2.getText());
+					MessageClairImpl messageClair = new MessageClairImpl(message);
+				}else{
+					JOptionPane.showMessageDialog(null, "Il nous manque le fichier afin de mener à bien le cryptage.", "Erreur Fichier", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}else{
+				JOptionPane.showMessageDialog(null, "Il manque une le vecteur d'initialisation, veuillez le compléter svp (4 bits).", "Erreur Vecteur Initialisation", JOptionPane.INFORMATION_MESSAGE);
+			}
 		}else{
-			JOptionPane.showMessageDialog(null, "Il nous manque un fichier afin de mener à bien le cryptage du fichier.", "Erreur Fichier", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Il manque une clé ou les deux clés sont identiques, veuillez corriger cela svp.", "Erreur Clé", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
 
 	@Override
 	public void EventBoutonDecrypter() {
-		if(cle1!=null&&cle2!=null&&message!=null){
-			CleImpl premiereCle=new CleImpl(cle1);
-			CleImpl secondeCle= new CleImpl(cle2);
-			MessageCrypteImpl messageCrypte = new MessageCrypteImpl(fichier);	
+		if(!textFieldCle1.getText().equals("")&&!textFieldCle2.getText().equals("")&&!textFieldCle1.getText().equals(textFieldCle2.getText())){
+			if(!textFieldIV.getText().equals("")){
+				if(message!=null){
+					CleImpl premiereCle=new CleImpl(textFieldCle1.getText());
+					CleImpl secondeCle= new CleImpl(textFieldCle2.getText());
+					MessageCrypteImpl messageCrypte = new MessageCrypteImpl(fichier);	
+				}else{
+					JOptionPane.showMessageDialog(null, "Il nous manque le fichier afin de mener à bien le decryptage.", "Erreur Fichier", JOptionPane.INFORMATION_MESSAGE);	
+				}
+			}else{
+				JOptionPane.showMessageDialog(null, "Il manque une le vecteur d'initialisation, veuillez le compléter svp (4 bits).", "Erreur Vecteur Initialisation", JOptionPane.INFORMATION_MESSAGE);
+			}
 		}else{
-			JOptionPane.showMessageDialog(null, "Il nous manque un fichier afin de mener à bien le decryptage du fichier.", "Erreur Fichier", JOptionPane.INFORMATION_MESSAGE);	
+			JOptionPane.showMessageDialog(null, "Il manque une clé ou les deux clés sont identiques, veuillez corriger cela svp.", "Erreur Clé", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
-	
+
 }
