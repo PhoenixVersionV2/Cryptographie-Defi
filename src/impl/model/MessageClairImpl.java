@@ -10,7 +10,7 @@ import contract.model.MessageClair;
 
 public class MessageClairImpl implements MessageClair{
 
-	private ArrayList<Integer> messageClaireBinaire= new ArrayList<Integer>();
+	private ArrayList<Integer> messageClairBinaire= new ArrayList<Integer>();
 	private ArrayList<Integer> cle;
 	
 	public MessageClairImpl(File file){
@@ -57,7 +57,7 @@ public class MessageClairImpl implements MessageClair{
 			}
 			
 			for(int i=0; i<binary.length();i++){
-	        	messageClaireBinaire.add(Integer.parseInt(binary.charAt(i)+""));
+	        	messageClairBinaire.add(Integer.parseInt(binary.charAt(i)+""));
 	        }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -67,4 +67,7 @@ public class MessageClairImpl implements MessageClair{
         System.out.println("Copie message clair terminée !");
 	}
 	
+	public int getTailleMessageCrypteBinaire() {
+		return messageClairBinaire.size();
+	}
 }

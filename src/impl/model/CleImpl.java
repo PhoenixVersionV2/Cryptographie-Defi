@@ -11,9 +11,13 @@ import contract.model.Cle;
 
 public class CleImpl implements Cle{
 	private ArrayList<Integer> cleBinaire = new ArrayList<Integer>();
+	private ArrayList<Integer> masqueBinaire = new ArrayList<Integer>();
+	private ArrayList<Integer> tableauInitial;
+	private int tailleTexte=0;
 	
-	public CleImpl(String fichier){
-		ConversionCleEnBinaire(fichier);
+	public CleImpl(String cle, int tailleFichier){
+		ConversionCleEnBinaire(cle);
+		this.tailleTexte=tailleFichier;
 	}
 	
 	
@@ -39,10 +43,16 @@ public class CleImpl implements Cle{
         }
         System.out.println("Copie clé terminée !");
 	}
+	
+	public void creationMasque(){
+		creationTableauInitial();
+		insertionCleDansTableauInitial();
+		generationMasque();
+	}
 
 	@Override
-	public void creationMasque() {
-		ArrayList<Integer> tableauInitial = new ArrayList<Integer>();
+	public void creationTableauInitial() {
+		tableauInitial = new ArrayList<Integer>();
 		for(int i=0;i<cleBinaire.size();i++){
 			if((i%2)==0){
 				tableauInitial.add(0);
@@ -50,6 +60,37 @@ public class CleImpl implements Cle{
 				tableauInitial.add(1);
 			}
 		}
+	}
+	
+	public void insertionCleDansTableauInitial(){
+		for(int i=0;i<cleBinaire.size();i++){
+			int dernierBit = tableauInitial.get(tableauInitial.size()-1);
+			int extraction1 = tableauInitial.get((tableauInitial.size()*7/8)-1);
+			int extraction2 = tableauInitial.get((tableauInitial.size()/2)-1);
+			int extraction3 = tableauInitial.get((tableauInitial.size()/4)-1);
+			int resultat1=dernierBit^extraction1;
+			int resultat2=resultat1^extraction2;
+			int resultat3=resultat2^extraction3;
+			int resultat=cleBinaire.get(i)^resultat3;
+			tableauInitial.remove(tableauInitial.size()-1);
+			tableauInitial.add(0, resultat);
+		}
+	}
+	
+	public void generationMasque(){
+		for(int i=0;i<tailleTexte;i++){
+			masqueBinaire.add(tableauInitial.get(tableauInitial.size()-1));
+			int dernierBit = tableauInitial.get(tableauInitial.size()-1);
+			int extraction1 = tableauInitial.get((tableauInitial.size()*7/8)-1);
+			int extraction2 = tableauInitial.get((tableauInitial.size()/2)-1);
+			int extraction3 = tableauInitial.get((tableauInitial.size()/4)-1);
+			int resultat1=dernierBit^extraction1;
+			int resultat2=resultat1^extraction2;
+			int resultat3=resultat2^extraction3;
+			tableauInitial.remove(tableauInitial.size()-1);
+			tableauInitial.add(0, resultat3);
+		}
+		System.out.println("Masque généré");
 	}
 
 }

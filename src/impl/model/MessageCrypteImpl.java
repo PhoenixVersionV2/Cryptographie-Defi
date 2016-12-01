@@ -66,4 +66,9 @@ public class MessageCrypteImpl implements MessageCrypte{
         System.out.println("Copie message crypté terminée !");
 	}
 
+
+	public int getTailleMessageCrypteBinaire() {
+		return messageCrypteBinaire.size();
+	}
+
 }
