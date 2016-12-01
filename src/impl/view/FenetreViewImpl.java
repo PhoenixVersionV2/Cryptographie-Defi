@@ -223,9 +223,7 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 		if(!textFieldCle1.getText().equals("")&&!textFieldCle2.getText().equals("")&&!textFieldCle1.getText().equals(textFieldCle2.getText())){
 			if(!textFieldIV.getText().equals("")){
 				if(message!=null){
-					MessageClairImpl messageClair = new MessageClairImpl(message);
-					CleImpl premiereCle=new CleImpl(textFieldCle1.getText(), messageClair.getTailleMessageCrypteBinaire());
-					CleImpl secondeCle= new CleImpl(textFieldCle2.getText(), messageClair.getTailleMessageCrypteBinaire());
+					MessageClairImpl messageClair = new MessageClairImpl(message, textFieldCle1, textFieldCle2);
 				}else{
 					JOptionPane.showMessageDialog(null, "Il nous manque le fichier afin de mener à bien le cryptage/décryptage.", "Erreur Fichier", JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -243,9 +241,7 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 		if(!textFieldCle1.getText().equals("")&&!textFieldCle2.getText().equals("")&&!textFieldCle1.getText().equals(textFieldCle2.getText())){
 			if(!textFieldIV.getText().equals("")){
 				if(message!=null){
-					MessageCrypteImpl messageCrypte = new MessageCrypteImpl(fichier);	
-					CleImpl premiereCle=new CleImpl(textFieldCle1.getText(), messageCrypte.getTailleMessageCrypteBinaire());
-					CleImpl secondeCle= new CleImpl(textFieldCle2.getText(), messageCrypte.getTailleMessageCrypteBinaire());
+					MessageCrypteImpl messageCrypte = new MessageCrypteImpl(fichier, textFieldCle1, textFieldCle1);	
 				}else{
 					JOptionPane.showMessageDialog(null, "Il nous manque le fichier afin de mener à bien le decryptage.", "Erreur Fichier", JOptionPane.INFORMATION_MESSAGE);	
 				}

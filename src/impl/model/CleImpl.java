@@ -50,6 +50,7 @@ public class CleImpl implements Cle{
 		generationMasque();
 	}
 
+	
 	@Override
 	public void creationTableauInitial() {
 		tableauInitial = new ArrayList<Integer>();
@@ -61,6 +62,7 @@ public class CleImpl implements Cle{
 			}
 		}
 	}
+	
 	
 	public void insertionCleDansTableauInitial(){
 		for(int i=0;i<cleBinaire.size();i++){
@@ -77,6 +79,7 @@ public class CleImpl implements Cle{
 		}
 	}
 	
+	
 	public void generationMasque(){
 		for(int i=0;i<tailleTexte;i++){
 			masqueBinaire.add(tableauInitial.get(tableauInitial.size()-1));
@@ -91,6 +94,16 @@ public class CleImpl implements Cle{
 			tableauInitial.add(0, resultat3);
 		}
 		System.out.println("Masque généré");
+	}
+
+
+	public ArrayList<Integer> getMasqueBinaire() {
+		return masqueBinaire;
+	}
+
+
+	public void setMasqueBinaire(ArrayList<Integer> masqueBinaire) {
+		this.masqueBinaire = masqueBinaire;
 	}
 
 }
