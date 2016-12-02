@@ -1,5 +1,7 @@
 package impl.model;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,25 +30,20 @@ public class MessageClairImpl implements MessageClair{
 
 	
 	public void ConversionBinaireMessage(File fichier) {
-		FileInputStream fis = null;
-        String str = "";
-
-        try {
-            fis = new FileInputStream(fichier.getPath());
-            int content;
-            while ((content = fis.read()) != -1) {
-                // convert to char and display it
-                str += (char) content;
-            }
-
-            System.out.println("Fin de lecture du message");
-            System.out.println(str);
-            
-            byte[] bytes = str.getBytes();
-            
+		 	long filesize = fichier.length();
+		 	byte data[] =  new byte[(int)filesize];
+		 	try {
+		 		DataInputStream in = new DataInputStream(new FileInputStream(fichier));
+				in.readFully(data);
+				in.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 	
             //Nous transformons la liste de bytes en un StringBuilder correspondant à la clé en bit.
             StringBuilder binary=new StringBuilder();
-            for (byte b : bytes)
+            for (byte b : data)
     		  {
     		     int val = b;
     		     for (int i = 0; i < 8; i++)
@@ -61,18 +58,7 @@ public class MessageClairImpl implements MessageClair{
             for(int i=0; i<binary.length();i++){
             	messageClairBinaire.add(Integer.parseInt(binary.charAt(i)+""));
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fis != null)
-                    fis.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        
+            
         System.out.println("Copie message clair terminée !");
 	}
 	
@@ -84,9 +70,9 @@ public class MessageClairImpl implements MessageClair{
 			secondeCle.creationMasque();
 			ArrayList<Integer> masqueBinaire = secondeCle.getMasqueBinaire();
 			ArrayList<Integer> resultat=new ArrayList<Integer>();
-			FileOutputStream fos=null;
+			DataOutputStream fos=null;
 			try {
-				fos = new FileOutputStream(new File(fichier.getPath().substring(0, fichier.getPath().length()-4)+"Crypte.txt"));
+				fos = new DataOutputStream(new FileOutputStream(new File(fichier.getPath().substring(0, fichier.getPath().length()-4)+"Crypte.txt")));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -102,16 +88,19 @@ public class MessageClairImpl implements MessageClair{
 				binary.append(resultat.get(i));
 			}
 
+			byte tabByte[]= new byte[binary.length()/8];
 		    for (int i = 0; i < binary.length()/8; i++) {
-		        int a = Integer.parseInt(binary.substring(8*i,(i+1)*8),2);
-		        
-		        try {
-					fos.write((char)a);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		        tabByte[i] = (byte) Integer.parseInt(binary.substring(8*i,(i+1)*8),2);
 		    }
+		    
+		    try {
+		    	for(int j=0;j<tabByte.length;j++){
+		    		fos.write(tabByte[j]);
+		    	}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		    
 		    System.out.println("Message crypté !");
 		    
