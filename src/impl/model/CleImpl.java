@@ -107,4 +107,14 @@ public class CleImpl implements Cle{
 		this.masqueBinaire = masqueBinaire;
 	}
 
+
+	public ArrayList<Integer> getCleBinaire() {
+		return cleBinaire;
+	}
+
+
+	public void setCleBinaire(ArrayList<Integer> cleBinaire) {
+		this.cleBinaire = cleBinaire;
+	}
+
 }

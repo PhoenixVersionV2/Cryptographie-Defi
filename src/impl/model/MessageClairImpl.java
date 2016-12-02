@@ -18,11 +18,13 @@ public class MessageClairImpl implements MessageClair{
 	private ArrayList<Integer> messageClairBinaire= new ArrayList<Integer>();
 	private CleImpl premiereCle;
 	private CleImpl secondeCle;
+	private String iv;
 	private File fichier;
 	
-	public MessageClairImpl(File file, JTextField textFieldCle1, JTextField textFieldCle2){
+	public MessageClairImpl(File file, JTextField textFieldCle1, JTextField textFieldCle2, JTextField textFieldIV){
 		 this.fichier=file;
 		 ConversionBinaireMessage(file);
+		 iv = textFieldIV.getText();
 		 premiereCle = new CleImpl(textFieldCle1.getText(), messageClairBinaire.size());
 		 secondeCle = new CleImpl(textFieldCle2.getText(), messageClairBinaire.size());
 		 cryptageMessage();

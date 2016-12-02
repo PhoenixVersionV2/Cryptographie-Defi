@@ -223,7 +223,7 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 		if(!textFieldCle1.getText().equals("")&&!textFieldCle2.getText().equals("")&&!textFieldCle1.getText().equals(textFieldCle2.getText())){
 			if(!textFieldIV.getText().equals("")){
 				if(message!=null){
-					MessageClairImpl messageClair = new MessageClairImpl(message, textFieldCle1, textFieldCle2);
+					MessageClairImpl messageClair = new MessageClairImpl(message, textFieldCle1, textFieldCle2, textFieldIV);
 				}else{
 					JOptionPane.showMessageDialog(null, "Il nous manque le fichier afin de mener à bien le cryptage/décryptage.", "Erreur Fichier", JOptionPane.INFORMATION_MESSAGE);
 				}
