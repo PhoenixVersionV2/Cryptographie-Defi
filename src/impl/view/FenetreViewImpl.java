@@ -241,7 +241,7 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 		if(!textFieldCle1.getText().equals("")&&!textFieldCle2.getText().equals("")&&!textFieldCle1.getText().equals(textFieldCle2.getText())){
 			if(!textFieldIV.getText().equals("")){
 				if(message!=null){
-					MessageCrypteImpl messageCrypte = new MessageCrypteImpl(fichier, textFieldCle1, textFieldCle1);	
+					MessageCrypteImpl messageCrypte = new MessageCrypteImpl(fichier, textFieldCle1, textFieldCle2);	
 				}else{
 					JOptionPane.showMessageDialog(null, "Il nous manque le fichier afin de mener à bien le decryptage.", "Erreur Fichier", JOptionPane.INFORMATION_MESSAGE);	
 				}

@@ -22,6 +22,7 @@ public class CleImpl implements Cle{
 	
 	
 	public void ConversionCleEnBinaire(String fichier){
+		System.out.println(fichier);
 		byte[] bytes = fichier.getBytes();
         
         //Nous transformons la liste de bytes en un StringBuilder correspondant à la clé en bit.
