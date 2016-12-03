@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import contract.model.MessageCrypte;
@@ -18,14 +19,19 @@ public class MessageCrypteImpl implements MessageCrypte {
 	private ArrayList<Integer> messageCrypteBinaire = new ArrayList<Integer>();
 	private CleImpl premiereCle;
 	private CleImpl secondeCle;
+	private String iv;
 	private File fichier;
 
-	public MessageCrypteImpl(File file, JTextField textFieldCle1, JTextField textFieldCle2) {
+	public MessageCrypteImpl(File file, JTextField textFieldCle1, JTextField textFieldCle2, JTextField textFieldIV) {
 		this.fichier=file;
 		 ConversionBinaireMessage(file);
+		 iv = textFieldIV.getText();
 		 premiereCle = new CleImpl(textFieldCle1.getText(), messageCrypteBinaire.size());
 		 secondeCle = new CleImpl(textFieldCle2.getText(), messageCrypteBinaire.size());
-		 decryptageMessage();
+		 Boolean reponse = decryptageMessage();
+		 if(reponse){
+			 JOptionPane.showMessageDialog(null, "Message Decrypté.", "Réussite", JOptionPane.INFORMATION_MESSAGE);
+		 }
 	}
 
 	public void ConversionBinaireMessage(File fichier) {
@@ -62,7 +68,7 @@ public class MessageCrypteImpl implements MessageCrypte {
 	}
 
 	
-	public void decryptageMessage() {
+	public Boolean decryptageMessage() {
 		secondeCle.creationMasque();
 		ArrayList<Integer> masqueBinaire = secondeCle.getMasqueBinaire();
 		ArrayList<Integer> resultat=new ArrayList<Integer>();
@@ -72,6 +78,7 @@ public class MessageCrypteImpl implements MessageCrypte {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 		
 		for(int i=0;i<messageCrypteBinaire.size();i++){
@@ -79,9 +86,12 @@ public class MessageCrypteImpl implements MessageCrypte {
 			resultat.add(transformation);
 		}
 		
+		CBCImpl cbc = new CBCImpl(resultat, iv, premiereCle.getCleBinaire());
+		ArrayList<Integer> messageDecrypte=cbc.crypterCBC();
+		
 		StringBuilder binary = new StringBuilder();
-		for(int i = 0;i < resultat.size();i++){
-			binary.append(resultat.get(i));
+		for(int i = 0;i < messageDecrypte.size();i++){
+			binary.append(messageDecrypte.get(i));
 		}
 
 		byte tabByte[]= new byte[binary.length()/8];
@@ -96,7 +106,10 @@ public class MessageCrypteImpl implements MessageCrypte {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
+	    System.out.println("Message Decrypté");
+	    return true;
 	}
 
 }

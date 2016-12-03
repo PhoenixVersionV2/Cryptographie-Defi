@@ -11,9 +11,20 @@ public class CBCImpl {
 	private byte[] tabByteCrypte;
 	private byte[] tabByteDecrypte;
 	
-	public CBCImpl(byte[] tabByte, String iv, ArrayList<Integer> cle)
+	public CBCImpl(ArrayList<Integer> listByte, String iv, ArrayList<Integer> cle)
 	{
-		this.tabByte = tabByte;
+		tabByte = new byte[listByte.size()];
+		for(int p = 0 ; p < listByte.size() ; p++)
+		{
+			if(listByte.get(p) == 1)
+			{
+				tabByte[p] = 1;
+			}
+			else if(listByte.get(p) == 0)
+			{
+				tabByte[p] = 0;
+			}
+		}
 		for(int i = 0 ; i < 4 ; i++)
 		{
 			this.iv.add(Integer.parseInt(Character.toString(iv.charAt(i))));
@@ -21,7 +32,7 @@ public class CBCImpl {
 		this.cle = cle;
 	}
 	
-	public byte[] crypterCBC()
+	public ArrayList<Integer> crypterCBC()
 	{
 		tabByteCrypte = new byte[tabByte.length];
 		for(int j = 0 ; j < tabByte.length ; j++)
@@ -93,11 +104,22 @@ public class CBCImpl {
 				}
 			}
 		}
-		
-		return tabByteCrypte;
+		ArrayList<Integer> listByte = new ArrayList<Integer>();
+		for(int p = 0 ; p < tabByte.length ; p++)
+		{
+			if(tabByte[p] == 1)
+			{
+				listByte.add(1);
+			}
+			else if(tabByte[p] == 0)
+			{
+				listByte.add(0);
+			}
+		}
+		return listByte;
 	}
 
-	public byte[] decrypterCBC()
+	public ArrayList<Integer> decrypterCBC()
 	{
 		tabByteDecrypte = new byte[tabByte.length];
 		for(int j = tabByte.length - 1; j >= 0 ; j--)
@@ -175,7 +197,18 @@ public class CBCImpl {
 				}
 			}
 		}
-		
-		return tabByteDecrypte;
+		ArrayList<Integer> listByte = new ArrayList<Integer>();
+		for(int p = 0 ; p < tabByte.length; p++)
+		{
+			if(tabByte[p] == 1)
+			{
+				listByte.add(1);
+			}
+			else if(tabByte[p] == 0)
+			{
+				listByte.add(0);
+			}
+		}
+		return listByte;
 	}
 }

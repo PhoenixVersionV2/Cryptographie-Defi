@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import contract.model.MessageClair;
@@ -27,7 +28,10 @@ public class MessageClairImpl implements MessageClair{
 		 iv = textFieldIV.getText();
 		 premiereCle = new CleImpl(textFieldCle1.getText(), messageClairBinaire.size());
 		 secondeCle = new CleImpl(textFieldCle2.getText(), messageClairBinaire.size());
-		 cryptageMessage();
+		 Boolean reponse=cryptageMessage();
+		 if(reponse){
+			 JOptionPane.showMessageDialog(null, "Message Crypté.", "Réussite", JOptionPane.INFORMATION_MESSAGE);
+		 }
 	}
 
 	
@@ -64,11 +68,9 @@ public class MessageClairImpl implements MessageClair{
         System.out.println("Copie message clair terminée !");
 	}
 	
-	public int getTailleMessageCrypteBinaire() {
-		return messageClairBinaire.size();
-	}
-	
-	public void cryptageMessage(){
+	public boolean cryptageMessage(){
+			CBCImpl cbc = new CBCImpl(messageClairBinaire, iv, premiereCle.getCleBinaire());
+			ArrayList<Integer> valeurIntermediaire=cbc.crypterCBC();
 			secondeCle.creationMasque();
 			ArrayList<Integer> masqueBinaire = secondeCle.getMasqueBinaire();
 			ArrayList<Integer> resultat=new ArrayList<Integer>();
@@ -78,10 +80,11 @@ public class MessageClairImpl implements MessageClair{
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return false;
 			}
 			
-			for(int i=0;i<messageClairBinaire.size();i++){
-				int transformation = messageClairBinaire.get(i)^masqueBinaire.get(i);
+			for(int i=0;i<valeurIntermediaire.size();i++){
+				int transformation = valeurIntermediaire.get(i)^masqueBinaire.get(i);
 				resultat.add(transformation);
 			}
 			
@@ -102,9 +105,10 @@ public class MessageClairImpl implements MessageClair{
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return false;
 			}
-		    
 		    System.out.println("Message crypté !");
+		    return true;
 		    
 	}
 }
