@@ -8,9 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -23,7 +20,6 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import contract.view.FenetreView;
-import impl.model.CleImpl;
 import impl.model.MessageClairImpl;
 import impl.model.MessageCrypteImpl;
 
@@ -66,7 +62,7 @@ public class FenetreViewImpl implements FenetreView, ActionListener{
 		
 		//Creation du label avec les instructions
 		JLabel instructionLabel=new JLabel();
-		instructionLabel.setText("<html>1. Ajouter le fichier à crypter ou décrypter.<br>2. Ajouter la clé n°1.<br>3. Ajouter le vecteur d'initialisation (4 bits)<br>4. Ajouter la clé n°2 <br>5. Cliquez sur crypter ou décrypter selon ce que vous souhaitez faire</html>");
+		instructionLabel.setText("<html>1. Ajouter le fichier à chiffrer ou déchiffrer.<br>2. Ajouter la clé n°1.<br>3. Ajouter le vecteur d'initialisation (4 bits)<br>4. Ajouter la clé n°2 <br>5. Cliquez sur crypter ou décrypter selon ce que vous souhaitez faire</html>");
 		panelNord.add(instructionLabel);
 		
 		//Création du panel pour obtenir le fichier
